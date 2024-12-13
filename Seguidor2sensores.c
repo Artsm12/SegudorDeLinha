@@ -1,41 +1,46 @@
 #pragma config(Sensor, S1,     SensorDireito,  sensorLightActive)
-#pragma config(Sensor, S2,     SensorCentro,   sensorLightActive)
-#pragma config(Sensor, S3,     SensorEsquerdo, sensorLightActive)
+#pragma config(Sensor, S2,     SensorEsquerdo, sensorLightActive)
 #pragma config(Motor,  motorA,          MotorDireito,  tmotorNXT, PIDControl, encoder)
 #pragma config(Motor,  motorB,          MotorEsquerdo, tmotorNXT, PIDControl, encoder)
 
 //Velocidade base do robo
 #define VelocidadeBase 50
 
-//Leitura do sensor quando ele ver a linha branca (possivelmente vai ser alterado)
+//Leitura do sensor quando ele estiver vendo a linha branca (possivelmente vai ser mudado)
 #define LeituraSensor 45
 
 task main(){
-
+	
 	while(true){
-
-		//Se o sensor do meio estiver vendo a linha branca, entao o robo seve seguir em frente
-		if(SensorValue[SensorCentro] >= LeituraSensor){
+		
+		//Se ambos os sensores verem a cor preta, isso quer dizer que o robo esta em cima da linha branca, portanto, deve seguir reto
+		if(SensorValue[SensorDireito] < LeituraSensor && SensorValue[SensorEsquerdo] < LeituraSensor){
 			motor[motorA] = VelocidadeBase;
 			motor[motorB] = VelocidadeBase;
 		}
-
-		//Caso contrario
+		
+		//caso contrario
 		else{
-
-			//Se o sensor da direita estiver vendo a linha branca, entao o rovo deve fazer curva para a direita
-			if(SensorValue[SensorDireito] >= LeituraSensor){
+			
+			//Se ele estiver vendo a cor preta na esquerda e a cor branca na direita, ele deve virar a direita
+			if(SensorValue[SensorDireito] >= LeituraSensor && SensorValue[SensorEsquerdo] < LeituraSensor){
 				motor[motorA] = VelocidadeBase - 40;
 				motor[motorB] = VelocidadeBase;
 			}
-
-			//Se o sensor da esquerda estiver vendo a linha branca, entao o rovo deve fazer curva para a esquerda
-			else if(SensorValue[SensorEsquerdo] >= LeituraSensor){
+			
+			//Se ele estiver vendo a cor preta na direita e a cor branca na esquerda, ele deve virar a esquerda
+			else if(SensorValue[SensorEsquerdo] >= LeituraSensor && SensorValue[SensorDireito] < LeituraSensor){
 				motor[motorA] = VelocidadeBase;
-				motor[motorB] = VelocidadeBase - 40;
+				motor[motorB] = VelocidadeBase - 40;	
 			}
+			
+			//Se ele estiver vendo a cor branca dos dois lados, ele deve seguir reto
+			else{
+				motor[motorA] = VelocidadeBase;
+				motor[motorB] = VelocidadeBase;
+			}
+			
 		}
-
 		//Tempo de espera para evitar sobrecarga
 		wait1Msec(1);
 	}

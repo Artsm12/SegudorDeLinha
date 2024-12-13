@@ -24,13 +24,13 @@ task main(){
 		else{
 
 			//Se o sensor da direita estiver vendo a linha branca, entao o robo deve fazer curva para a direita
-			if(SensorValue[SensorDireito] >= LeituraSensor){
+			if(SensorValue[SensorDireito] >= LeituraSensor && SensorValue[SensorEsquerdo] < LeituraSensor){
 				motor[motorA] = VelocidadeBase - 40;
 				motor[motorB] = VelocidadeBase;
 			}
 			
 			//Se o sensor da esquerda estiver vendo a linha branca, entao o robo deve fazer curva para a esquerda
-			else if(SensorValue[SensorEsquerdo] >= LeituraSensor){
+			else if(SensorValue[SensorEsquerdo] >= LeituraSensor && SensorValue[SensorDireito] < LeituraSensor){
 				motor[motorA] = VelocidadeBase;
 				motor[motorB] = VelocidadeBase - 40;
 			}
