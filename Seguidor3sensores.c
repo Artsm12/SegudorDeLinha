@@ -34,6 +34,10 @@ task main(){
 				motor[motorA] = VelocidadeBase;
 				motor[motorB] = VelocidadeBase - 40;
 			}
+            else{
+                motor[motorA] = VelocidadeBase;
+			    motor[motorB] = VelocidadeBase;
+            }
 		}
 		
 		//Tempo de espera para evitar sobrecarga
